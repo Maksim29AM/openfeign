@@ -1,5 +1,7 @@
 package cam.example.app;
 
+import feign.FeignException;
+import feign.RetryableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,11 +24,23 @@ public class AppApplication {
 
     @EventListener(ApplicationStartedEvent.class)
     public void makeRequestToCrimsonSunEndpoint() {
-        CrimsonSunResponse response = crimsonSunClient.makeSearchRequest("crimsonsun", 100);
-        List<CrimsonSunResult> results = response.results();
-        results.stream()
-                .filter(crimsonSunResult -> "Neon Lights".equalsIgnoreCase(crimsonSunResult.trackName()))
-                .forEach(System.out::println);
+        try {
+            CrimsonSunResponse response = crimsonSunClient.makeSearchRequest("crimsonsun", 100);
+            List<CrimsonSunResult> results = response.results();
+            results.stream()
+                    .filter(crimsonSunResult -> "Neon Lights".equalsIgnoreCase(crimsonSunResult.trackName()))
+                    .forEach(System.out::println);
+
+        } catch (FeignException.FeignClientException feignException) {
+            System.out.println("Client exception: " + feignException.status());
+        } catch (FeignException.FeignServerException feignException) {
+            System.out.println("Server exceptions: " + feignException.status());
+        } catch (RetryableException retryableException) {
+            System.out.println("Retryable exceptions: " + retryableException.getMessage());
+        } catch (FeignException feignException) {
+            System.out.println(feignException.getMessage());
+            System.out.println(feignException.status());
+        }
     }
 }
 
