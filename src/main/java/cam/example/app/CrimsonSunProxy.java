@@ -1,4 +1,4 @@
-package cam.example.app.app;
+package cam.example.app;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,7 @@ public interface CrimsonSunProxy {
 
 
     @GetMapping("/search")
-    String makeSearchRequest(
+    CrimsonSunResponse makeSearchRequest(
            @RequestParam("term") String term,
            @RequestParam("limit") Integer limit
     );
