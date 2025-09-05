@@ -1,4 +1,4 @@
-package cam.example.app.app;
+package cam.example.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -13,8 +13,6 @@ public class AppApplication {
 
     @Autowired
     CrimsonSunProxy crimsonSunClient;
-    @Autowired
-    DogProxy dogClient;
 
     public static void main(String[] args) {
         SpringApplication.run(AppApplication.class, args);
@@ -22,20 +20,8 @@ public class AppApplication {
 
     @EventListener(ApplicationStartedEvent.class)
     public void makeRequestToCrimsonSunEndpoint() {
-        String response = crimsonSunClient.makeSearchRequest("crimsonsun", 100);
+        CrimsonSunResponse response = crimsonSunClient.makeSearchRequest("crimsonsun", 5);
         System.out.println(response);
-
-//    @EventListener(ApplicationStartedEvent.class)
-//    public void makeRequestToRandomDog() {
-//        Dog dogResponse = dogClient.getRandomDogImage();
-//        System.out.println("Image: "+dogResponse.getMessage());
-//
-//        System.out.println("======================");
-//
-//        DogList dogResponseByBreed = dogClient.getDogByBreed("doberman");
-//        for (String dogs : dogResponseByBreed.getMessage()) {
-//            System.out.println(dogs);
-//        }
     }
 
 }
