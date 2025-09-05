@@ -11,8 +11,8 @@ import org.springframework.context.event.EventListener;
 @EnableFeignClients
 public class AppApplication {
 
-    //    @Autowired
-//    CrimsonSunProxy crimsonSunClient;
+    @Autowired
+    CrimsonSunProxy crimsonSunClient;
     @Autowired
     DogProxy dogClient;
 
@@ -20,22 +20,22 @@ public class AppApplication {
         SpringApplication.run(AppApplication.class, args);
     }
 
-//    @EventListener(ApplicationStartedEvent.class)
-//    public void makeRequestToCrimsonSunEndpoint() {
-//        String response = crimsonSunClient.makeSearchRequest("crimsonsun", 100);
-//        System.out.println(response);
-
     @EventListener(ApplicationStartedEvent.class)
-    public void makeRequestToRandomDog() {
-        Dog dogResponse = dogClient.getRandomDogImage();
-        System.out.println("Image: "+dogResponse.getMessage());
+    public void makeRequestToCrimsonSunEndpoint() {
+        String response = crimsonSunClient.makeSearchRequest("crimsonsun", 100);
+        System.out.println(response);
 
-        System.out.println("======================");
-
-        DogList dogResponseByBreed = dogClient.getDogByBreed("doberman");
-        for (String dogs : dogResponseByBreed.getMessage()) {
-            System.out.println(dogs);
-        }
+//    @EventListener(ApplicationStartedEvent.class)
+//    public void makeRequestToRandomDog() {
+//        Dog dogResponse = dogClient.getRandomDogImage();
+//        System.out.println("Image: "+dogResponse.getMessage());
+//
+//        System.out.println("======================");
+//
+//        DogList dogResponseByBreed = dogClient.getDogByBreed("doberman");
+//        for (String dogs : dogResponseByBreed.getMessage()) {
+//            System.out.println(dogs);
+//        }
     }
 
 }
