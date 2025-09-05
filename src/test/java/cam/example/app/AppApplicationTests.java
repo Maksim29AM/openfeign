@@ -1,4 +1,4 @@
-package cam.example.app.app;
+package cam.example.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
