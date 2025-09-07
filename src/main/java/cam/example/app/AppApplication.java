@@ -42,9 +42,10 @@ public class AppApplication {
 //            ItunesResponse response = iTunesClient.makeSearchRequest("crimsonsun", 100);
             SampleServerShawnMendesResponse response = sampleShawnMendesServerClient.fetchSongs();
             SampleShawnMendesRequest request = new SampleShawnMendesRequest("New song");
-            SampleServerShawnMendesResponse addSongs = sampleShawnMendesServerClient.addSong(request);
+//            SampleServerShawnMendesResponse addSongs = sampleShawnMendesServerClient.addSong(request);
+            sampleShawnMendesServerClient.deleteSong("0");
             log.info(response);
-            log.info(addSongs);
+//            log.info(addSongs);
 
         } catch (FeignException.FeignClientException feignException) {
             log.error("Client exception: {}", feignException.status());
