@@ -1,5 +1,11 @@
 package cam.example.app;
 
+import cam.example.app.itunes.ItunesProxy;
+import cam.example.app.itunes.ItunesResponse;
+import cam.example.app.itunes.ItunesResult;
+import cam.example.app.sampleshawnmendesserver.SampleServerShawnMendesResponse;
+import cam.example.app.sampleshawnmendesserver.SampleShawnMendesRequest;
+import cam.example.app.sampleshawnmendesserver.SampleShawnMendesServerProxy;
 import feign.FeignException;
 import feign.RetryableException;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +25,10 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 public class AppApplication {
 
     @Autowired
-    CrimsonSunProxy crimsonSunClient;
+    ItunesProxy iTunesClient;
+
+    @Autowired
+    SampleShawnMendesServerProxy sampleShawnMendesServerClient;
 
     Logger log = getLogger(AppApplication.class);
 
@@ -28,13 +37,14 @@ public class AppApplication {
     }
 
     @EventListener(ApplicationStartedEvent.class)
-    public void makeRequestToCrimsonSunEndpoint() {
+    public void run() {
         try {
-            CrimsonSunResponse response = crimsonSunClient.makeSearchRequest("crimsonsun", 100);
-            List<CrimsonSunResult> results = response.results();
-            results.stream()
-                    .filter(crimsonSunResult -> "Neon Lights".equalsIgnoreCase(crimsonSunResult.trackName()))
-                    .forEach(System.out::println);
+//            ItunesResponse response = iTunesClient.makeSearchRequest("crimsonsun", 100);
+            SampleServerShawnMendesResponse response = sampleShawnMendesServerClient.fetchSongs();
+            SampleShawnMendesRequest request = new SampleShawnMendesRequest("New song");
+            SampleServerShawnMendesResponse addSongs = sampleShawnMendesServerClient.addSong(request);
+            log.info(response);
+            log.info(addSongs);
 
         } catch (FeignException.FeignClientException feignException) {
             log.error("Client exception: {}", feignException.status());
